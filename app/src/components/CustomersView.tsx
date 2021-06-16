@@ -9,6 +9,7 @@ const CustomersView = () => {
         getCustomers().then(c => {
             if (isMounted) onCustomersLoad(c);
         });
+        // cleanup function called after unmounting
         return () => { isMounted = false;}
     }, [customers]);
     return customers.length > 0 ? (

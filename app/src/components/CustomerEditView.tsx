@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { updateCustomer } from "../services/customerService";
 import CustomerFormView from "./CustomerFormView";
 
-const CustomerEditView = ({details} : CustomerDetailProps) => {
+const CustomerEditView = ({details = null} : CustomerDetailProps) => {
     const history = useHistory();
     const [customer, onCustomerChanged] = useState(details);
     const [msg, onSetMessage] = useState('');
