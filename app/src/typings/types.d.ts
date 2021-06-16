@@ -1,6 +1,9 @@
 type CustomerDetailProps = {
     details: Nullable<CustomerDetails>
 }
+type TriggerUpdateProps = {
+    triggerUpdate: () => {}
+}
 type CustomerFormProps = {
     details: CustomerDetails,
     onChangeEvent: React.ChangeEventHandler<HTMLInputElement>

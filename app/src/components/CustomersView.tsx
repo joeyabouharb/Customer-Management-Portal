@@ -5,17 +5,17 @@ const initialState: Nullable<CustomerDetails>[] = [];
 const CustomersView = () => {
     const [customers, onCustomersLoad] = useState<Nullable<CustomerDetails>[]>(initialState)
     useEffect(() => {
-        let isMounted = true; 
+        triggerUpdate();
+    }, []);
+    const triggerUpdate = () => {
         getCustomers().then(c => {
-            if (isMounted) onCustomersLoad(c);
+            onCustomersLoad(c);
         });
-        // cleanup function called after unmounting
-        return () => { isMounted = false;}
-    }, [customers]);
+    }
     return customers.length > 0 ? (
         <div className="d-flex flex-row align-self-stretch flex-wrap">
             {
-                customers.map(c => <CustomerView details={c} key={`${c?.customerId}`}/>)
+                customers.map(c => <CustomerView details={c} key={`${c?.customerId}`} triggerUpdate={triggerUpdate}/>)
             }
         </div>
     ) : <></>
