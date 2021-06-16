@@ -2,7 +2,7 @@ type CustomerDetailProps = {
     details: Nullable<CustomerDetails>
 }
 type TriggerUpdateProps = {
-    triggerUpdate: () => {}
+    triggerUpdate: () => void
 }
 type CustomerFormProps = {
     details: CustomerDetails,
