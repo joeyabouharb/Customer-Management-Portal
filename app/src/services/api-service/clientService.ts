@@ -37,7 +37,7 @@ export const useObservable = (initValue: boolean = true) => {
     const subj = new BehaviorSubject<boolean>(initValue);
 
     const next = (value: boolean): void => {
-        subj.next(value)
+        subj.next(value);
     };
     return { change: subj.asObservable(), next };
 };

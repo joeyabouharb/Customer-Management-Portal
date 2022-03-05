@@ -1,9 +1,10 @@
 
 import { Link } from "react-router-dom";
-import { CustomerClientProps } from "../services/api-service/clientService";
+import { useObservable } from "../services/api-service/clientService";
 import CustomersView from "./CustomersView"
 
-const HomeView = ({ UpdateCustomer, DeleteCustomer, AddCustomer, GetCustomer, customerChange, customerNext }: CustomerClientProps) => {
+const HomeView = () => {
+    const { change: customerChange, next: customerNext } = useObservable();
     return (
         <div>
             <div className="d-flex">
@@ -15,14 +16,7 @@ const HomeView = ({ UpdateCustomer, DeleteCustomer, AddCustomer, GetCustomer, cu
                 </div>
             </div>
             <div>
-                <CustomersView
-                    UpdateCustomer={UpdateCustomer}
-                    DeleteCustomer={DeleteCustomer}
-                    AddCustomer={AddCustomer}
-                    GetCustomer={GetCustomer}
-                    customerChange={customerChange}
-                    customerNext={customerNext}
-                />
+                <CustomersView  customerChange={customerChange} customerNext={customerNext} />
             </div>
         </div>
     )

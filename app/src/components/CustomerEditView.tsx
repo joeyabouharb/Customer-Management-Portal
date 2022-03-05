@@ -3,10 +3,10 @@ import { Alert, Button, Form } from "react-bootstrap";
 import { Redirect } from "react-router";
 import { useHistory } from "react-router-dom";
 import { Subscription } from "rxjs";
-import { CustomerClientProps } from "../services/api-service/clientService";
+import customerApi from "../services/api-service/customerService";
 import CustomerFormView from "./CustomerFormView";
 
-const CustomerEditView = ({ details = null, UpdateCustomer }: CustomerDetailProps & CustomerClientProps) => {
+const CustomerEditView = ({ details = null }: CustomerDetailProps) => {
     const history = useHistory();
     const [customer, onCustomerChanged] = useState(details);
     const [subscription, updateSubscription] = useState(Subscription.EMPTY);
@@ -26,10 +26,10 @@ const CustomerEditView = ({ details = null, UpdateCustomer }: CustomerDetailProp
             })
         }
     };
-    const onSaveSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const onSaveSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (customer !== null) {
-            updateSubscription(UpdateCustomer(customer).subscribe((result) => {
+            updateSubscription(customerApi.UpdateCustomer(customer).subscribe((result) => {
                 if (result) {
                     onSetMessage('');
                     history.push('/');

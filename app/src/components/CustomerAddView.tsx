@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Form, Alert } from "react-bootstrap";
 import CustomerFormView from "./CustomerFormView";
 import { useHistory } from 'react-router-dom'
-import { CustomerClientProps } from "../services/api-service/clientService";
+import customerApi from "../services/api-service/customerService";
 import { Subscription } from "rxjs";
 const initialState = {
     customerId: 0,
@@ -11,7 +11,7 @@ const initialState = {
     homeAddress: '',
     email: ''
 }
-const CustomerAddView = ({ AddCustomer }: CustomerClientProps) => {
+const CustomerAddView = () => {
     const history = useHistory();
     const [customer, onCustomerChanged] = useState(initialState);
     const [msg, onSetMessage] = useState('');
@@ -33,7 +33,7 @@ const CustomerAddView = ({ AddCustomer }: CustomerClientProps) => {
     };
     const onSaveSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        updateSubscription(AddCustomer(customer).subscribe((result) => {
+        updateSubscription(customerApi.AddCustomer(customer).subscribe((result) => {
             if (result) {
                 onSetMessage('');
                 history.push('/');

@@ -31,7 +31,10 @@ const DeleteCustomer = (id: number) => {
       const res = d.deleted as boolean;
       return res;
     }),
-    catchError(err => of(console.log(err))),
+    catchError(err => {
+      console.log(err)
+      return of(false)
+    }),
   )
 }
 

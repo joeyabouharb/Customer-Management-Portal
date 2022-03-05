@@ -21,7 +21,7 @@ const routes = [
         component: CustomerEditView
     }
 ];
-export const Router = (appState: any) => routes.map(
+export const Router = (appState: any = {}) => routes.map(
     ({
         path, exact, component, ...rest
     }) => createElement(

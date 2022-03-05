@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { Subscription } from 'rxjs';
-import { DeleteCustomerProps } from '../services/api-service/clientService';
-const CustomerView = ({ details, DeleteCustomer, customerNext }: DeleteCustomerProps) => {
+import customerService from '../services/api-service/customerService';
+const CustomerView = ({ details, customerNext }: { details: Nullable<CustomerDetails>, customerNext: (result: boolean) => void }) => {
     const history = useHistory();
     const hasDetails = details !== null;
     const [deleteSubscription, updateDeleteSubscription] = useState(Subscription.EMPTY)
@@ -15,7 +15,8 @@ const CustomerView = ({ details, DeleteCustomer, customerNext }: DeleteCustomerP
     }, [deleteSubscription])
     const deleteCustomerEvent = () => {
         if (details?.customerId !== undefined)
-            updateDeleteSubscription(DeleteCustomer(details.customerId).subscribe((result: boolean) => customerNext(true)));
+            updateDeleteSubscription(customerService.DeleteCustomer(details.customerId)
+            .subscribe((result: boolean) => customerNext(result)));
     };
     const editCustomerEvent = () => {
         history.push('/edit', {

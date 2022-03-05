@@ -1,25 +1,33 @@
 import { useEffect, useState } from "react";
-import { iif, of } from "rxjs";
-import { switchMap } from "rxjs/operators";
-import { CustomerClientProps } from "../services/api-service/clientService";
+import { Observable } from "rxjs";
+import { filter, switchMapTo, tap } from "rxjs/operators";
+import customerService from "../services/api-service/customerService";
 import CustomerView from "./CustomerView";
 const initialState: Nullable<CustomerDetails>[] = [];
-const CustomersView = ({ GetCustomer, customerChange, DeleteCustomer, customerNext }: CustomerClientProps) => {
+const CustomersView = ({ customerChange, customerNext }: { customerChange: Observable<boolean>, customerNext: (result: boolean) => void }) => {
     const [customers, onCustomersLoad] = useState<Nullable<CustomerDetails>[]>(initialState);
+    const listener = customerChange.pipe(
+        tap(s => console.log(s)),
+        filter(d => d),
+        switchMapTo(customerService.GetCustomer()));
+
     useEffect(() => {
-        const listener = customerChange.pipe(
-            switchMap((v) => iif(() => v, GetCustomer(), of(customers))),
-        ).subscribe(c => {
+        const subscription = listener.subscribe(c => {
             onCustomersLoad(c)
+            customerNext(false)
         });
         return () => {
-            listener.unsubscribe();
+            subscription.unsubscribe();
         }
-    }, [GetCustomer, customerChange, customerNext, customers]);
+    }, [listener, customerNext]);
     return customers?.length > 0 ? (
         <div className="d-flex flex-row align-self-stretch flex-wrap">
             {
-                customers.map(c => <CustomerView details={c} key={`${c?.customerId}`} DeleteCustomer={DeleteCustomer} customerNext={customerNext}/>)
+                customers.map(c => <CustomerView
+                    details={c}
+                    customerNext={customerNext}
+                    key={`${c?.customerId}`}
+                />)
             }
         </div>
     ) : <></>
