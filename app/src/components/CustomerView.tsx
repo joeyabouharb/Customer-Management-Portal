@@ -1,15 +1,21 @@
 
+import { useEffect, useState } from 'react';
 import { Card, Button } from 'react-bootstrap';
-import { deleteCustomers } from '../services/customerService';
 import { useHistory } from 'react-router-dom';
-const CustomerView = ({details, triggerUpdate}: CustomerDetailProps & TriggerUpdateProps) => {
+import { Subscription } from 'rxjs';
+import { DeleteCustomerProps } from '../services/api-service/clientService';
+const CustomerView = ({ details, DeleteCustomer, customerNext }: DeleteCustomerProps) => {
     const history = useHistory();
     const hasDetails = details !== null;
-    const deleteCustomerEvent = async () => 
-    {
+    const [deleteSubscription, updateDeleteSubscription] = useState(Subscription.EMPTY)
+    useEffect(() => {
+        return () => {
+            deleteSubscription.unsubscribe()
+        }
+    }, [deleteSubscription])
+    const deleteCustomerEvent = () => {
         if (details?.customerId !== undefined)
-            await deleteCustomers(details.customerId);
-        triggerUpdate();
+            updateDeleteSubscription(DeleteCustomer(details.customerId).subscribe((result: boolean) => customerNext(true)));
     };
     const editCustomerEvent = () => {
         history.push('/edit', {
@@ -26,8 +32,8 @@ const CustomerView = ({details, triggerUpdate}: CustomerDetailProps & TriggerUpd
                         {details?.homeAddress}
                     </Card.Text>
                     <div className="d-flex">
-                    <Button className="bg-info m-1" onClick={editCustomerEvent}>Edit</Button>
-                    <Button className="bg-danger m-1" onClick={deleteCustomerEvent}>Delete</Button>
+                        <Button className="bg-info m-1" onClick={editCustomerEvent}>Edit</Button>
+                        <Button className="bg-danger m-1" onClick={deleteCustomerEvent}>Delete</Button>
                     </div>
                 </Card.Body>
             </Card>

@@ -21,7 +21,7 @@ const routes = [
         component: CustomerEditView
     }
 ];
-export const Router = routes.map(
+export const Router = (appState: any) => routes.map(
     ({
         path, exact, component, ...rest
     }) => createElement(
@@ -31,8 +31,8 @@ export const Router = routes.map(
         exact,
         render: (props: any) => {
             const { location } = props;
-            const {  state } = location;
-            return createElement(component, { ...props, ...state, ...rest })
+            const { state } = location;
+            return createElement(component, { ...props, ...state, ...rest, ...appState })
         },
     },
     ),

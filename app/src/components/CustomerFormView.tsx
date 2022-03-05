@@ -1,9 +1,9 @@
 import { Form } from "react-bootstrap";
 
-const CustomerFormView = ({details, onChangeEvent}: CustomerFormProps) => {
+const CustomerFormView = ({ details, onChangeEvent }: CustomerFormProps) => {
     return (
         <>
-            <input type="hidden" readOnly value={details.customerId}/>
+            <input type="hidden" readOnly value={details.customerId} />
             <Form.Group>
                 <Form.Label>First Name:</Form.Label>
                 <Form.Control

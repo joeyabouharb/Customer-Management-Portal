@@ -9,10 +9,11 @@ type CustomerFormProps = {
     onChangeEvent: React.ChangeEventHandler<HTMLInputElement>
 }
 type CustomerDetails = {
-        customerId: number,
-        firstName: string,
-        surname: string,
-        email: string,
-        homeAddress: string
+    customerId: number,
+    firstName: string,
+    surname: string,
+    email: string,
+    homeAddress: string
 }
-type Nullable<T> = T | null
+
+type Nullable<T> = T | null | undefined
